@@ -3,7 +3,8 @@ import { AppModule } from './app.module';
 
 //entry point of any Nest Js Project
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule); //creating an instance of a Nest Js Application
   await app.listen(process.env.PORT ?? 3000); //port number
+  // console.log(app); //inside of app instance
 }
 bootstrap();
