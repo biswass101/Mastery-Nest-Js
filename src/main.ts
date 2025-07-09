@@ -8,7 +8,11 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
     forbidNonWhitelisted: true,
-    transform: true
+    transform: true,
+    transformOptions: {
+      enableImplicitConversion: true,
+      exposeUnsetFields: false
+    }
   }));
   await app.listen(process.env.PORT ?? 3000); //port number
   // console.log(app); //inside of app instance

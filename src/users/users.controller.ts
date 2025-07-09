@@ -1,6 +1,8 @@
-import { Body, Controller, DefaultValuePipe, Get, Param, ParseIntPipe, Post, Query, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, DefaultValuePipe, Get, Param, ParseIntPipe, Patch, Post, Query, ValidationPipe } from "@nestjs/common";
 import { UsersService } from "./users.service";
 import { CreateUserDto } from "./dtos/create-user.dto";
+import { GetUserParamDto } from "./dtos/get-user-param.dto";
+import { UpdateUserDto } from "./dtos/update-user.dto";
 
 @Controller('users') //users url
 export class UsersController {
@@ -9,9 +11,10 @@ export class UsersController {
     // @Query('id')
     getUsers(
         @Query('limit',new DefaultValuePipe(10),  ParseIntPipe) limit: number, 
-        @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number
+        @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+        @Param() param: GetUserParamDto,
     ) {
-        console.log(limit + ' ' + page);
+        console.log(param);
     }
     // :id/:name/:gender
     @Get(':id') // ? means this parameter is optional
@@ -19,12 +22,24 @@ export class UsersController {
        
         return this.usersService.getUserById(id);
     }
-
+ 
     @Post() // Post routing decorator
     createUser(@Body() user: CreateUserDto) {
         console.log(user instanceof CreateUserDto);
         // const user = {id: 5, name: 'marry', email: 'marry@wedding.com', gender: 'female', isMarried: false}
         // this.usersService.createUser(user);
         return "A new user has been created!"
+    }
+
+    @Patch()
+    updateUser(@Body() user: UpdateUserDto) {
+        //debugging
+        // const res = Object.entries(body).reduce((acc, [key, val]) => {
+        //     if(val !== undefined) acc[key] = val
+        //     return acc;
+        // }, {})
+        // console.log(res);
+
+        console.log(user);
     }
 }

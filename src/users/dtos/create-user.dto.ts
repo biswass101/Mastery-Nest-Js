@@ -1,4 +1,4 @@
-import { IsBoolean, IsEmail, IsEnum, IsNotEmpty, IsNumber, IsString, MinLength } from "class-validator";
+import { IsBoolean, IsEmail, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, MinLength } from "class-validator";
 import { Gender } from "src/common/enums/gender.enum";
 
 export class CreateUserDto {
@@ -10,8 +10,9 @@ export class CreateUserDto {
     @MinLength(3, {message: "Name should be at least 3 charcter long"})
     name: string;
 
-    @IsEnum(Gender, {message: "Gender must be: male or female"})
-    gender: string;
+    @IsString()
+    @IsOptional()
+    gender?: string;
 
     @IsEmail()
     email: string;
