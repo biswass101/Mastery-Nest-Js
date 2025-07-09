@@ -22,6 +22,7 @@ export class UsersController {
 
     @Post() // Post routing decorator
     createUser(@Body() user: CreateUserDto) {
+        console.log(user instanceof CreateUserDto);
         // const user = {id: 5, name: 'marry', email: 'marry@wedding.com', gender: 'female', isMarried: false}
         // this.usersService.createUser(user);
         return "A new user has been created!"
