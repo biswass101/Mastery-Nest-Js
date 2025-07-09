@@ -12,7 +12,7 @@ export class UsersService {
     getAllUsers() {
         return this.users;
     }
-email
+
     getUserById(id: number) {
         return this.users.find(x => x.id === id)
     }

@@ -31,15 +31,9 @@ export class UsersController {
         return "A new user has been created!"
     }
 
+
     @Patch()
     updateUser(@Body() user: UpdateUserDto) {
-        //debugging
-        // const res = Object.entries(body).reduce((acc, [key, val]) => {
-        //     if(val !== undefined) acc[key] = val
-        //     return acc;
-        // }, {})
-        // console.log(res);
-
         console.log(user);
     }
 }
