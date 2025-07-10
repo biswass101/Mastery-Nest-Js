@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Profile } from "src/profile/porfile.entity";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class User {
@@ -27,6 +28,11 @@ export class User {
         length: 100
     })
     password: string;
+
+    @OneToOne(() => Profile) //this entity(User) will have the foreign key and 
+    // Profile will have the primary key
+    @JoinColumn() //joining the table
+    profile?: Profile
 
     @CreateDateColumn()
     createdAt: Date;
