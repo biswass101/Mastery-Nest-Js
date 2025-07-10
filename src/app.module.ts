@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { TweetModule } from './tweet/tweet.module';
+import { User } from './users/user.entity';
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { TweetModule } from './tweet/tweet.module';
       inject: [],
       useFactory: () => ({
         type: 'postgres',
-        entities: [],
+        entities: [User],
         synchronize: true, // for dev mode only
         host: 'localhost',
         port: 5432,
