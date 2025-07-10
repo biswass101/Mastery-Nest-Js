@@ -12,12 +12,12 @@ export class TweetService {
         {text: 'City University is getting known day by day', date: new Date('2024-02-02'), userId: 3},
     ]
 
-    getTweets(userId?: number) {
-        const user = this.userService.getUserById(userId as number)
-        const newTweets = this.tweets.map(t => ({...t, name: user?.name}))
-        if(userId) {
-            return newTweets.find(tweet => tweet.userId === userId); 
-        }
-        return newTweets;
-    }
+    // getTweets(userId?: number) {
+    //     const user = this.userService.getUserById(userId as number)
+    //     const newTweets = this.tweets.map(t => ({...t, name: user?.name}))
+    //     if(userId) {
+    //         return newTweets.find(tweet => tweet.userId === userId); 
+    //     }
+    //     return newTweets;
+    // }
 }

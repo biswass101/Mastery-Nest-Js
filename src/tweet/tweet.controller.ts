@@ -5,13 +5,13 @@ import { TweetService } from './tweet.service';
 export class TweetController {
     constructor(private tweetService: TweetService) {}
 
-    @Get()
-    public getAllTweets() {
-        return this.tweetService.getTweets();
-    }
+    // @Get()
+    // public getAllTweets() {
+    //     return this.tweetService.getTweets();
+    // }
 
-    @Get(':userId')
-    public getTweetsByUserId(@Param('userId', ParseIntPipe) userId: number) {
-        return this.tweetService.getTweets(userId);
-    }
+    // @Get(':userId')
+    // public getTweetsByUserId(@Param('userId', ParseIntPipe) userId: number) {
+    //     return this.tweetService.getTweets(userId);
+    // }
 }

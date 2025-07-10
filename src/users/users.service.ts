@@ -1,23 +1,27 @@
 import { Injectable } from "@nestjs/common";
+import { Repository } from "typeorm";
+import { User } from "./user.entity";
+import { InjectRepository } from "@nestjs/typeorm";
+import { CreateUserDto } from "./dtos/create-user.dto";
 
 @Injectable()
 export class UsersService {
-    users: {id: number, name: string, email: string, gender: string, isMarried: boolean}[] = [
-        {id: 1, name: "NIloy", email: 'niloy@y.com', gender: "male", isMarried: false},
-        {id: 2, name: "Akash", email: 'akash@cwd.com', gender: "male", isMarried: true},
-        {id: 3, name: "Mim", email: 'mim@dim.com', gender: "female", isMarried: false},
-        {id: 4, name: "Mahin", email: "mahin@jahin.com", gender: "male", isMarried: true},
-    ]
+    constructor(@InjectRepository(User) private userRepository: Repository<User>){}
 
     getAllUsers() {
-        return this.users;
+       return this.userRepository.find()
     }
 
-    getUserById(id: number) {
-        return this.users.find(x => x.id === id)
-    }
+    async createUser(userDto: CreateUserDto) {
+       const user = await this.userRepository.findOne(({
+        where: { email: userDto.email}
+       }))
 
-    createUser(user: {id: number, name: string, email: string, gender: string, isMarried: boolean}) {
-        this.users.push(user);
+       if(user) return 'The user is Exits already!';
+
+       let newUser = this.userRepository.create(userDto) // not inserted yet
+       newUser = await this.userRepository.save(newUser)
+
+       return newUser;
     }
 }
