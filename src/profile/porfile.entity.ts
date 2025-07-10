@@ -1,0 +1,43 @@
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+
+@Entity()
+export class Profile {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column({
+    type: 'varchar',
+    nullable: true,
+    length: 100,
+  })
+  firstName: string;
+
+  @Column({
+    type: 'varchar',
+    nullable: true,
+    length: 100,
+  })
+  lastName: string;
+
+  @Column({
+    type: 'varchar',
+    nullable: true,
+    length: 10,
+  })
+  gender: string;
+
+  @Column({
+    type: 'timestamp',
+    nullable: true,
+  })
+  dataOfBirth: Date;
+
+  @Column({
+    type: 'text',
+    nullable: true,
+  })
+  bio: string;
+
+  @Column({ type: 'text', nullable: true })
+  profileImage: String;
+}
