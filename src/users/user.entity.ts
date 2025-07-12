@@ -29,7 +29,9 @@ export class User {
     })
     password: string;
 
-    @OneToOne(() => Profile) //this entity(User) will have the foreign key and 
+    @OneToOne(() => Profile, {
+        cascade: ['insert', 'remove']
+    }) //this entity(User) will have the foreign key and 
     // Profile will have the primary key
     @JoinColumn() //joining the table
     profile?: Profile

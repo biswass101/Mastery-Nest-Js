@@ -15,19 +15,19 @@ export class UsersService {
       private profileRepository: Repository<Profile>
    ){}
 
-    getAllUsers() {
-       return this.userRepository.find()
+    async getAllUsers() {
+       return await this.userRepository.find()
     }
 
     async createUser(userDto: CreateUserDto) {
 
-      userDto.profile = userDto.profile ?? {}
-      let profile = this.profileRepository.create(userDto.profile);
-      await this.profileRepository.save(profile);
+      userDto.profile = userDto.profile ?? {} //profile will always created
+      // let profile = this.profileRepository.create(userDto.profile);
+      // await this.profileRepository.save(profile);
 
       let user = this.userRepository.create(userDto);
-      user.profile = profile
+      // user.profile = profile
 
-      await this.userRepository.save(user);
+      return await this.userRepository.save(user);
     }
 }
