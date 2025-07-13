@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { User } from "./user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -22,12 +22,18 @@ export class UsersService {
     async createUser(userDto: CreateUserDto) {
 
       userDto.profile = userDto.profile ?? {} //profile will always created
-      // let profile = this.profileRepository.create(userDto.profile);
-      // await this.profileRepository.save(profile);
-
       let user = this.userRepository.create(userDto);
-      // user.profile = profile
-
       return await this.userRepository.save(user);
+    }
+    async deleteUser(id: number) {
+      const user = await this.userRepository.findOneBy({id});
+      if(!user) throw new NotFoundException("User Not Found!");
+      
+      await this.userRepository.delete(id);
+      this.profileRepository.delete(Number(user?.profile?.id));
+
+      return {
+        deleted: true
+      }
     }
 }
