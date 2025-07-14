@@ -33,4 +33,8 @@ export class UsersService {
     await this.userRepository.delete(id);
     return {msg: "usr deleted"};
   }
+
+  async findUserById(id: number) {
+    return await this.userRepository.findOneBy({id});
+  }
 }
