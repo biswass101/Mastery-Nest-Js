@@ -1,5 +1,6 @@
 import { Profile } from "src/profile/porfile.entity";
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Tweet } from "src/tweet/tweet.entity";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class User {
@@ -36,6 +37,9 @@ export class User {
     // Profile will have the primary key
     // @JoinColumn() //joining the table and ads a foreign key column
     profile?: Profile
+
+    @OneToMany(() => Tweet, (tweet) => tweet.user)
+    tweets: Tweet[]
 
     @CreateDateColumn()
     createdAt: Date;
