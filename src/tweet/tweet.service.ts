@@ -16,7 +16,12 @@ export class TweetService {
         private readonly tweetRep: Repository<Tweet>
     ) {}
 
-    async getTweets(userId: number) {}
+    async getTweets(userId: number) {
+        return await this.tweetRep.find({
+            where: {user: {id: userId}},
+            relations: {user: true}
+        })
+    }
 
 
     async createTweet(createTweetDto: CreateTweetDto) {
