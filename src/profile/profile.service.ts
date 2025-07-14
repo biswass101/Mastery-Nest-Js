@@ -10,6 +10,10 @@ export class ProfileService {
         private profileRepo: Repository<Profile>) {}
     
     async getProfileFromDB() {
-        return await this.profileRepo.find();
+        return await this.profileRepo.find({
+            relations: {
+                user: true,
+            },
+        });
     }
 }

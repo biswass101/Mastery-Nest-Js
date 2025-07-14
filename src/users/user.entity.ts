@@ -29,12 +29,12 @@ export class User {
     })
     password: string;
 
-    @OneToOne(() => Profile, {
+    @OneToOne(() => Profile, (profile) =>{profile.user}  ,{
         cascade: ['insert', 'remove'],
-        eager: true  //this is for quering child and parent data together
+        // eager: true  //this is for quering child and parent data together
     }) //this entity(User) will have the foreign key and 
     // Profile will have the primary key
-    @JoinColumn() //joining the table
+    @JoinColumn() //joining the table and ads a foreign key column
     profile?: Profile
 
     @CreateDateColumn()

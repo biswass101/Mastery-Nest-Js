@@ -16,7 +16,11 @@ export class UsersService {
    ){}
 
     async getAllUsers() {
-       return await this.userRepository.find()
+       return await this.userRepository.find({
+        relations: {
+          profile: true
+        }
+       })
     }
 
     async createUser(userDto: CreateUserDto) {
