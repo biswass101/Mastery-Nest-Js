@@ -19,7 +19,7 @@ export class TweetService {
     async getTweets(userId: number) {
         return await this.tweetRep.find({
             where: {user: {id: userId}},
-            relations: {user: true}
+            relations: {user: true} 
         })
     }
 
