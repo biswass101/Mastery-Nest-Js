@@ -1,5 +1,7 @@
 import {
   BadRequestException,
+  HttpException,
+  HttpStatus,
   Injectable,
   NotFoundException,
   RequestTimeoutException,
@@ -65,6 +67,20 @@ export class UsersService {
   }
 
   async findUserById(id: number) {
-    return await this.userRepository.findOneBy({ id });
+
+    const user = await this.userRepository.findOneBy({ id });
+
+    if(!user) {
+      throw new HttpException({
+        status: HttpStatus.NOT_FOUND,
+        error: `User with id ${id} not found`,
+        table: 'user',
+        hudai: 'Gu'
+      }, HttpStatus.NOT_FOUND, {
+        description: 'The user you are looking for does not exist in the database'
+      })
+    }
+
+    return user;
   }
 }

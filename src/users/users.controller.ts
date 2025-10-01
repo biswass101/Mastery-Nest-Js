@@ -12,6 +12,11 @@ export class UsersController {
     getAllusers() {
         return this.usersService.getAllUsers();
     }
+
+    @Get(':id')
+    getUserById(@Param('id', ParseIntPipe) id: number) {
+        return this.usersService.findUserById(id);
+    }
  
     @Post() // Post routing decorator
     createUser(@Body() user: CreateUserDto) {
