@@ -9,8 +9,8 @@ import { HashtagsModule } from './hashtags/hashtags.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import  appConfig from './config/app.config';
 import databaseConfig from './config/database.config';
-import { User } from './users/user.entity';
 import { AuthModule } from './auth/auth.module';
+import envValidator from './config/env.validation'
 
 @Module({
   imports: [
@@ -19,7 +19,8 @@ import { AuthModule } from './auth/auth.module';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: !process.env.NODE_ENV ? '.env' : `.env.${process.env.NODE_ENV}`,
-      load: [appConfig, databaseConfig]
+      load: [appConfig, databaseConfig],
+      validationSchema: envValidator
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
