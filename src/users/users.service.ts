@@ -20,31 +20,39 @@ export class UsersService {
     try {
       return await this.userRepository.find();
     } catch (error) {
-      if(error.code === 'ECONNREFUSED') { 
+      if (error.code === 'ECONNREFUSED') {
         throw new RequestTimeoutException('An error has occureed', {
-        description: 'Could not connect to the database',
-      });
+          description: 'Could not connect to the database',
+        });
       }
 
-      console.log("Error: ", error);
+      console.log('Error: ', error);
     }
   }
 
   async createUser(userDto: CreateUserDto) {
     try {
       userDto.profile = userDto.profile ?? {};
+
+      const isExists = await this.userRepository.findOne({
+        where: [{ email: userDto.email }, { username: userDto.username }],
+      });
+
+      if (isExists) {
+        throw new BadRequestException(
+          'User with this username/email already existsss',
+        );
+      }
+
       let user = this.userRepository.create(userDto);
       return await this.userRepository.save(user);
-    } catch (error:any) {
-      if(error.code === 'ECONNREFUSED') { 
+    } catch (error: any) {
+      if (error.code === 'ECONNREFUSED') {
         throw new RequestTimeoutException('An error has occureed', {
-        description: 'Could not connect to the database',
-      });
+          description: 'Could not connect to the database',
+        });
       }
-      if(error.code === '23505') {
-        throw new BadRequestException("User with this email already exists");
-      } 
-      console.log(error);
+      throw error;
     }
   }
 
