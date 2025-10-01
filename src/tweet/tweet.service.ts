@@ -7,7 +7,7 @@ import { CreateTweetDto } from './dto/create-tweet.dto';
 import { User } from 'src/users/user.entity';
 import { HashtagsService } from 'src/hashtags/hashtags.service';
 import { UpdateTweetDto } from './dto/update-tweet.dto';
-import { text } from 'stream/consumers';
+
 
 @Injectable()
 export class TweetService {
@@ -19,7 +19,18 @@ export class TweetService {
         private readonly tweetRep: Repository<Tweet>
     ) {}
 
+    async getAllTweets() {
+        return await this.tweetRep.find();
+    }
+
     async getTweets(userId: number) {
+
+        const user = await this.userService.findUserById(userId);
+        console.log(user);
+        if(!user) {
+            throw new NotFoundException(`User with id ${userId} is Not Found!`);
+        }
+
         return await this.tweetRep.find({
             where: {user: {id: userId}},
             relations: {user: true, hashtags: true} 

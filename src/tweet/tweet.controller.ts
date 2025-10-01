@@ -7,6 +7,11 @@ import { UpdateTweetDto } from './dto/update-tweet.dto';
 export class TweetController {
     constructor(private tweetService: TweetService) {}
 
+    @Get()
+    getAllTweets() {
+        return this.tweetService.getAllTweets();
+    }
+
     @Get(':id')
     getTweets(@Param('id', ParseIntPipe) id: number) {
         return this.tweetService.getTweets(id);
