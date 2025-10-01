@@ -6,7 +6,8 @@ import { UsersModule } from './users/users.module';
 import { TweetModule } from './tweet/tweet.module';
 import { ProfileModule } from './profile/profile.module';
 import { HashtagsModule } from './hashtags/hashtags.module';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { appConfig } from './config/app.config';
 
 @Module({
   imports: [
@@ -14,21 +15,23 @@ import { ConfigModule } from '@nestjs/config';
     TweetModule,
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: './src/.env' //if it's not in the root directory
+      envFilePath: !process.env.NODE_ENV ? '.env' : `.env.${process.env.NODE_ENV}`,
+      load: [appConfig]
     }),
     TypeOrmModule.forRootAsync({
-      imports: [],
-      inject: [],
-      useFactory: () => ({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
         type: 'postgres',
         // entities: [User],
-        autoLoadEntities: true, //auto load entity
-        synchronize: true, // for dev mode only
-        host: 'localhost',
-        port: 5432,
-        username: 'postgres',
-        password: '2025Niloy',
-        database: 'NestJS',
+        autoLoadEntities:  configService.get('database.autoLoadEntities'), //auto load entity
+        synchronize: configService.get('database.syncronize'), // for dev mode only
+        host: configService.get('database.host'),
+        port: +configService.get('database.port'),
+        username: configService.get('database.username'),
+        password: configService.get('database.password'),
+        database: configService.get('database.name'),
+     
       }),
     }),
     ProfileModule,
