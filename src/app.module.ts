@@ -10,6 +10,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import  appConfig from './config/app.config';
 import databaseConfig from './config/database.config';
 import { User } from './users/user.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { User } from './users/user.entity';
     }),
     ProfileModule,
     HashtagsModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
