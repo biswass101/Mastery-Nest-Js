@@ -7,7 +7,8 @@ import { TweetModule } from './tweet/tweet.module';
 import { ProfileModule } from './profile/profile.module';
 import { HashtagsModule } from './hashtags/hashtags.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { appConfig } from './config/app.config';
+import  appConfig from './config/app.config';
+import databaseConfig from './config/database.config';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { appConfig } from './config/app.config';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: !process.env.NODE_ENV ? '.env' : `.env.${process.env.NODE_ENV}`,
-      load: [appConfig]
+      load: [appConfig, databaseConfig]
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
