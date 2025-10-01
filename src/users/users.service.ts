@@ -15,13 +15,12 @@ export class UsersService {
   ) {}
 
   async getAllUsers() {
-    const environmenst = this.configService.get('ENV_MODE');
-    console.log(environmenst);
+  
     return await this.userRepository.find();
   }
 
   async createUser(userDto: CreateUserDto) {
-    userDto.profile = userDto.profile ?? {}; //profile will always created
+    userDto.profile = userDto.profile ?? {}; 
     let user = this.userRepository.create(userDto);
     return await this.userRepository.save(user);
   }

@@ -9,6 +9,7 @@ import { HashtagsModule } from './hashtags/hashtags.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import  appConfig from './config/app.config';
 import databaseConfig from './config/database.config';
+import { User } from './users/user.entity';
 
 @Module({
   imports: [
@@ -24,7 +25,6 @@ import databaseConfig from './config/database.config';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        // entities: [User],
         autoLoadEntities:  configService.get('database.autoLoadEntities'), //auto load entity
         synchronize: configService.get('database.syncronize'), // for dev mode only
         host: configService.get('database.host'),
@@ -32,7 +32,6 @@ import databaseConfig from './config/database.config';
         username: configService.get('database.username'),
         password: configService.get('database.password'),
         database: configService.get('database.name'),
-     
       }),
     }),
     ProfileModule,
