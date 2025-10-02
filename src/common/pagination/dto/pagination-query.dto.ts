@@ -1,14 +1,14 @@
 import { Type } from "class-transformer";
 import { IsOptional, IsPositive } from "class-validator";
 
-export class PaginationDto {
+export class PaginationQueryDto {
     @IsOptional()
     @IsPositive()
     @Type(() => Number) //get the string from the url and convert it to number
-    limit?: number;
+    limit?: number = 10;
 
     @IsOptional()
     @IsPositive()
     @Type(() => Number) //get the string from the url and convert it to number
-    page: number;
+    page?: number = 1;
 }

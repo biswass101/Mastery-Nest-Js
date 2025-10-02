@@ -11,17 +11,24 @@ import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UserAlreadyExistsException } from 'src/customExceptions/user-already-exists-exception';
+import { isArray } from 'class-validator';
+import { PaginationQueryDto } from 'src/common/pagination/dto/pagination-query.dto';
+import { PaginationProvider } from 'src/common/pagination/pagination.provider';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    private readonly paginationProvider: PaginationProvider
   ) {}
 
-  async getAllUsers() {
+  async getAllUsers(paginationQueryDto: PaginationQueryDto) {
     try {
-      return await this.userRepository.find();
+      return await this.paginationProvider.paginateQuery(
+        paginationQueryDto,
+        this.userRepository
+      );
     } catch (error) {
       if (error.code === 'ECONNREFUSED') {
         throw new RequestTimeoutException('An error has occureed', {
@@ -71,6 +78,28 @@ export class UsersService {
       }
       throw error;
     }
+  }
+
+  async createManyUsers(users: CreateUserDto[]) {
+    if(!isArray(users)) throw new BadRequestException('Array of users expected');
+    let usersToSave: User[] = [];
+    for (const userDto of users) {
+      userDto.profile = userDto.profile ?? {};
+
+      const isExists = await this.userRepository.findOne({
+        where: [{ email: userDto.email }, { username: userDto.username }],
+      });
+
+      if (isExists) {
+        throw new BadRequestException(
+          `User with email ${userDto.email} or username ${userDto.username} already exists`,
+        );
+      }
+
+      let user = this.userRepository.create(userDto);
+      usersToSave.push(user);
+    }
+    return await this.userRepository.save(usersToSave);
   }
 
   async deleteUser(id: number) {

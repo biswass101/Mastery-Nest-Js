@@ -7,6 +7,8 @@ import { CreateTweetDto } from './dto/create-tweet.dto';
 import { User } from 'src/users/user.entity';
 import { HashtagsService } from 'src/hashtags/hashtags.service';
 import { UpdateTweetDto } from './dto/update-tweet.dto';
+import { PaginationQueryDto } from 'src/common/pagination/dto/pagination-query.dto';
+import { PaginationProvider } from 'src/common/pagination/pagination.provider';
 
 
 @Injectable()
@@ -16,25 +18,30 @@ export class TweetService {
         private readonly userService: UsersService,
         private readonly hashtagService: HashtagsService,
         @InjectRepository(Tweet)
-        private readonly tweetRep: Repository<Tweet>
+        private readonly tweetRep: Repository<Tweet>,
+        private readonly pagiantionProvider: PaginationProvider
     ) {}
 
-    async getAllTweets() {
-        return await this.tweetRep.find();
+    async getAllTweets(paginationQueryDto: PaginationQueryDto) {
+        return await this.pagiantionProvider.paginateQuery(
+            paginationQueryDto,
+            this.tweetRep
+        );
     }
 
-    async getTweets(userId: number) {
+    async getTweets(userId: number, pageQueryDto: PaginationQueryDto) {
 
         const user = await this.userService.findUserById(userId);
-        console.log(user);
+
         if(!user) {
             throw new NotFoundException(`User with id ${userId} is Not Found!`);
         }
 
-        return await this.tweetRep.find({
-            where: {user: {id: userId}},
-            relations: {user: true, hashtags: true} 
-        })
+        return await this.pagiantionProvider.paginateQuery(
+            pageQueryDto,
+            this.tweetRep,
+            { user: { id: userId } }
+        )
     }
 
 
@@ -46,6 +53,17 @@ export class TweetService {
         let tweet = this.tweetRep.create({...createTweetDto, user: user as User, hashtags});
 
         return await this.tweetRep.save(tweet);
+    }
+
+    async createManyTweets(tweets: CreateTweetDto[]) {
+        let tweetsToSave: Tweet[] = [];
+        for(const tweetDto of tweets) {
+            let user = await this.userService.findUserById(tweetDto.userId);
+            let hashtags = await this.hashtagService.findHashtags(tweetDto.hashtags as number[])
+            let tweet = this.tweetRep.create({...tweetDto, user: user as User, hashtags});
+            tweetsToSave.push(tweet);
+        }
+        return await this.tweetRep.save(tweetsToSave);
     }
 
     async updateTweet(updateTweetDto: UpdateTweetDto) {

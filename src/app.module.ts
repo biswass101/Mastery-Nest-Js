@@ -10,6 +10,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import  appConfig from './config/app.config';
 import databaseConfig from './config/database.config';
 import { AuthModule } from './auth/auth.module';
+import { PaginationModule } from './common/pagination/pagination.module';
 import envValidator from './config/env.validation'
 
 @Module({
@@ -39,6 +40,7 @@ import envValidator from './config/env.validation'
     ProfileModule,
     HashtagsModule,
     AuthModule,
+    PaginationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
