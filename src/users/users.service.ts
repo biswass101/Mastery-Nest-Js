@@ -14,6 +14,7 @@ import { UserAlreadyExistsException } from 'src/customExceptions/user-already-ex
 import { isArray } from 'class-validator';
 import { PaginationQueryDto } from 'src/common/pagination/dto/pagination-query.dto';
 import { PaginationProvider } from 'src/common/pagination/pagination.provider';
+import { Paginated } from 'src/common/pagination/pagineter.interface';
 
 @Injectable()
 export class UsersService {
@@ -23,11 +24,13 @@ export class UsersService {
     private readonly paginationProvider: PaginationProvider
   ) {}
 
-  async getAllUsers(paginationQueryDto: PaginationQueryDto) {
+  async getAllUsers(paginationQueryDto: PaginationQueryDto): Promise<Paginated<User>> {
     try {
       return await this.paginationProvider.paginateQuery(
         paginationQueryDto,
-        this.userRepository
+        this.userRepository,
+        null!,
+        ['profile']
       );
     } catch (error) {
       if (error.code === 'ECONNREFUSED') {
@@ -37,6 +40,7 @@ export class UsersService {
       }
 
       console.log('Error: ', error);
+      return error;
     }
   }
 
