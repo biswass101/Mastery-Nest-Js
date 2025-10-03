@@ -9,6 +9,7 @@ import { HashtagsService } from 'src/hashtags/hashtags.service';
 import { UpdateTweetDto } from './dto/update-tweet.dto';
 import { PaginationQueryDto } from 'src/common/pagination/dto/pagination-query.dto';
 import { PaginationProvider } from 'src/common/pagination/pagination.provider';
+import { Paginated } from 'src/common/pagination/pagineter.interface';
 
 
 @Injectable()
@@ -22,14 +23,14 @@ export class TweetService {
         private readonly pagiantionProvider: PaginationProvider
     ) {}
 
-    async getAllTweets(paginationQueryDto: PaginationQueryDto) {
+    async getAllTweets(paginationQueryDto: PaginationQueryDto): Promise<Paginated<Tweet>> {
         return await this.pagiantionProvider.paginateQuery(
             paginationQueryDto,
             this.tweetRep
         );
     }
 
-    async getTweets(userId: number, pageQueryDto: PaginationQueryDto) {
+    async getTweets(userId: number, pageQueryDto: PaginationQueryDto): Promise<Paginated<Tweet>> {
 
         const user = await this.userService.findUserById(userId);
 
