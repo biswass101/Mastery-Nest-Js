@@ -1,10 +1,13 @@
 import {
   BadRequestException,
+  forwardRef,
   HttpException,
   HttpStatus,
+  Inject,
   Injectable,
   NotFoundException,
   RequestTimeoutException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
@@ -15,13 +18,18 @@ import { isArray } from 'class-validator';
 import { PaginationQueryDto } from 'src/common/pagination/dto/pagination-query.dto';
 import { PaginationProvider } from 'src/common/pagination/pagination.provider';
 import { Paginated } from 'src/common/pagination/pagineter.interface';
+import { HashingProvider } from 'src/auth/provider/hashing.provider';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
-    private readonly paginationProvider: PaginationProvider
+    private readonly paginationProvider: PaginationProvider,
+
+    @Inject(forwardRef(() => HashingProvider))
+    private readonly hashingProvider: HashingProvider
+
   ) {}
 
   async getAllUsers(paginationQueryDto: PaginationQueryDto): Promise<Paginated<User>> {
@@ -72,7 +80,12 @@ export class UsersService {
         );
       }
 
-      let user = this.userRepository.create(userDto);
+      // hash the password before saving
+      let user = this.userRepository.create({
+        ...userDto,
+        password: await this.hashingProvider.hashPassword(userDto.password)
+      });
+
       return await this.userRepository.save(user);
     } catch (error: any) {
       if (error.code === 'ECONNREFUSED') {
@@ -127,6 +140,25 @@ export class UsersService {
       }, HttpStatus.NOT_FOUND, {
         description: 'The user you are looking for does not exist in the database'
       })
+    }
+
+    return user;
+  }
+
+
+  public async findUserByUserName(username: string): Promise<User | null> {
+    let user: User | null = null;
+
+    try {
+      user = await this.userRepository.findOneBy({ username });
+    } catch (error) {
+      throw new RequestTimeoutException(error, {
+        description: 'User with given username could not be found',
+      })
+    }
+
+    if(!user) {
+      throw new UnauthorizedException(`User does not exist`);
     }
 
     return user;

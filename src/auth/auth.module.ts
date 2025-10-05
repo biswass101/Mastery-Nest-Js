@@ -14,8 +14,10 @@ import authConfig from './config/auth.config';
   }],
   controllers: [AuthController],
   imports: [
-    UsersModule,
+    forwardRef(() => UsersModule),
     ConfigModule.forFeature(authConfig)
-  ]
+  ],
+
+  exports: [AuthService, HashingProvider]
 })
 export class AuthModule {}
