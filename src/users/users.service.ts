@@ -13,12 +13,13 @@ import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from './dtos/create-user.dto';
-import { UserAlreadyExistsException } from 'src/customExceptions/user-already-exists-exception';
+import { PaginationProvider } from '../common/pagination/pagination.provider';
+import { HashingProvider } from '../auth/provider/hashing.provider';
+import { PaginationQueryDto } from '../common/pagination/dto/pagination-query.dto';
+import { Paginated } from '../common/pagination/pagineter.interface';
+import { UserAlreadyExistsException } from '../customExceptions/user-already-exists-exception';
 import { isArray } from 'class-validator';
-import { PaginationQueryDto } from 'src/common/pagination/dto/pagination-query.dto';
-import { PaginationProvider } from 'src/common/pagination/pagination.provider';
-import { Paginated } from 'src/common/pagination/pagineter.interface';
-import { HashingProvider } from 'src/auth/provider/hashing.provider';
+
 
 @Injectable()
 export class UsersService {

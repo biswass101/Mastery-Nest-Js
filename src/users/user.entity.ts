@@ -1,6 +1,6 @@
-import { Profile } from "src/profile/porfile.entity";
-import { Tweet } from "src/tweet/tweet.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Profile } from "../profile/porfile.entity";
+import { Tweet } from "../tweet/tweet.entity";
 
 @Entity()
 export class User {

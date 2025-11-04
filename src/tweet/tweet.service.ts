@@ -1,15 +1,17 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { UsersService } from 'src/users/users.service';
 import { Repository } from 'typeorm';
 import { Tweet } from './tweet.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateTweetDto } from './dto/create-tweet.dto';
-import { User } from 'src/users/user.entity';
-import { HashtagsService } from 'src/hashtags/hashtags.service';
+
 import { UpdateTweetDto } from './dto/update-tweet.dto';
-import { PaginationQueryDto } from 'src/common/pagination/dto/pagination-query.dto';
-import { PaginationProvider } from 'src/common/pagination/pagination.provider';
-import { Paginated } from 'src/common/pagination/pagineter.interface';
+import { HashtagsService } from '../hashtags/hashtags.service';
+import { UsersService } from '../users/users.service';
+import { PaginationProvider } from '../common/pagination/pagination.provider';
+import { PaginationQueryDto } from '../common/pagination/dto/pagination-query.dto';
+import { Paginated } from '../common/pagination/pagineter.interface';
+import { User } from '../users/user.entity';
+
 
 
 @Injectable()

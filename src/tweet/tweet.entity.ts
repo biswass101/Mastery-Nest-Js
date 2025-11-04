@@ -1,6 +1,7 @@
-import { Hashtag } from "src/hashtags/hashtag.entity";
-import { User } from "src/users/user.entity";
+
 import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { User } from "../users/user.entity";
+import { Hashtag } from "../hashtags/hashtag.entity";
 
 @Entity()
 export class Tweet {

@@ -15,7 +15,7 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { GetUserParamDto } from './dtos/get-user-param.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
-import { PaginationQueryDto } from 'src/common/pagination/dto/pagination-query.dto';
+import { PaginationQueryDto } from '../common/pagination/dto/pagination-query.dto';
 
 @Controller('users') //users url
 export class UsersController {

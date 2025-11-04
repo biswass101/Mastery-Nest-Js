@@ -1,5 +1,5 @@
-import { Tweet } from "src/tweet/tweet.entity";
 import { Column, DeleteDateColumn, Entity, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Tweet } from "../tweet/tweet.entity";
 
 @Entity()
 export class Hashtag {

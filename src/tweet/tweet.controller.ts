@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query 
 import { TweetService } from './tweet.service';
 import { CreateTweetDto } from './dto/create-tweet.dto';
 import { UpdateTweetDto } from './dto/update-tweet.dto';
-import { PaginationQueryDto } from 'src/common/pagination/dto/pagination-query.dto';
+import { PaginationQueryDto } from '../common/pagination/dto/pagination-query.dto';
 
 @Controller('tweet')
 export class TweetController {
