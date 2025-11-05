@@ -11,5 +11,5 @@ export default Joi.object({
     DB_PASSWORD: Joi.string().required(),
     DB_SYNC: Joi.boolean().required(),
     AUTO_LOAD: Joi.boolean().required(),
-    SECRET_KEY: Joi.string().required(),
+    JWT_SECRET: Joi.string().required(),
 })
