@@ -14,10 +14,12 @@ import { ProductService } from './product/product.service';
 import { ProductController } from './product/product.controller';
 import { EmployeeModule } from './employee/employee.module';
 import { CategoryModule } from './category/category.module';
+import { CustomerModule } from './customer/customer.module';
+import { MynameController } from './myname/myname.controller';
 
 @Module({
-  imports: [CatsModule, EmployeeModule, CategoryModule],
-  controllers: [AppController, UserController, ProductController],
+  imports: [CatsModule, EmployeeModule, CategoryModule, CustomerModule],
+  controllers: [AppController, UserController, ProductController, MynameController],
   providers: [AppService, UserService, ProductService],
 })
 export class AppModule implements NestModule {
