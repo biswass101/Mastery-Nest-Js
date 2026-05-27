@@ -1,0 +1,18 @@
+import { Controller, Get } from '@nestjs/common';
+import { SalesService } from './sales.service';
+
+@Controller('sales')
+export class SalesController {
+  constructor(private readonly salesService: SalesService) {
+  }
+
+  @Get()
+  getAllSales() {
+    return this.salesService.findAll();
+  }
+
+  @Get('aggregrate')
+  getByAgg() {
+    return this.salesService.runAggQueries();
+  }
+}

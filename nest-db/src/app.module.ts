@@ -1,0 +1,31 @@
+import { Module } from '@nestjs/common';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { ConfigModule } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
+import { StudentModule } from './student/student.module';
+import { UserModule } from './user/user.module';
+import { EmployeeModule } from './employee/employee.module';
+import { ProductModule } from './product/product.module';
+import { LibraryModule } from './library/library.module';
+import { ProjectModule } from './project/project.module';
+import { InventoryModule } from './inventory/inventory.module';
+import { SalesModule } from './sales/sales.module';
+
+@Module({
+  imports: [
+    ConfigModule.forRoot(),
+    MongooseModule.forRoot(process.env.MONGO!),
+    StudentModule,
+    UserModule,
+    EmployeeModule,
+    ProductModule,
+    LibraryModule,
+    ProjectModule,
+    InventoryModule,
+    SalesModule
+  ],
+  controllers: [AppController],
+  providers: [AppService],
+})
+export class AppModule {}
